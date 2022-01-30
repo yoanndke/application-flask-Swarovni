@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block titre %} Panel admin {% endblock %}
+
+{% block corps %}
+    <h1>Liste des clients</h1>
+    <table border=1>
+        <thead>
+        <td>Firstname</td>
+        <td>Name</td>
+        <td>Sex</td>
+        <td>Mail</td>
+        <td>Téléphone</td>
+        <td>Adresse</td>
+        <td>Code Postal</td>
+        <td>Ville</td>
+        <td>Password</td>
+        <td>Admin</td>
+        </thead>
+        {% for user in rows_users %}
+        <tr>
+            <td>{{user["firstname"]}}</td>
+            <td>{{user["name"]}}</td>
+            <td>
+                {% if user["sex"] != None %}
+                    {{user["sex"]}}
+                {% endif %}
+            </td>
+            <td>{{user["mail"]}}</td>
+            <td>
+                {% if user["phone_number"] != None %}
+                    {{user["phone_number"]}}
+                {% endif %}
+            </td>
+            <td>
+                {% if user["address"] != None %}
+                    {{user["address"]}}
+                {% endif %}
+            </td>
+            <td>{% if user["postal_code"] != None %}
+                    {{user["postal_code"]}}
+                {% endif %}
+            </td>
+            <td>{% if user["town"] != None %}
+                    {{user["town"]}}
+                {% endif %}
+            </td>
+            <td>{{user["password"]}}</td>
+            <td>{{user["admin"]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="btns--inline">
+        <a class="btn btn--primary" href=" {{ url_for('add_admin') }}">Ajouter un administrateur</a>
+        <a class="btn btn--primary" href=" {{ url_for('del_user') }} ">Supprimer un client</a>
+    </div>
+
+    <h1>Liste des produits</h1>
+    <table border=1>
+        <thead>
+        <td>Title</td>
+        <td>Tag</td>
+        <td>Price</td>
+        <td>Desc</td>
+        <td>Photos</td>
+        </thead>
+        {% for product in rows_products %}
+        <tr>
+            <td><strong>{{product["title"]}}</strong></td>
+            <td><span class="product-tag">{{product["tag"]}}</span></td>
+            <td>{{product["price"]}}€</td>
+            <td>{{product["desc"]}}</td>
+            <td>
+                {{product["filename1"]}},<br />
+                {{product["filename2"]}},<br />
+                {{product["filename3"]}}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

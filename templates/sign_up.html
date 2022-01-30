@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block titre %}Inscription à Swarovni{% endblock %}
+
+{% block corps %}
+<div class="signup">
+    <form action="/sign_up" class="form-wrapper signup-form" method="POST">
+        <h1 class="signup-title">Inscription</h1>
+        <div class="input-box">
+            <input class="input-text" minlength="3" name="firstname" onChange="this.setAttribute('value', this.value);" required type="text"
+                   value="">
+            <label class="input-label">Prénom</label>
+        </div>
+        <div class="input-box">
+            <input class="input-text" minlength="3" name="name" onChange="this.setAttribute('value', this.value);" required type="text"
+                   value="">
+            <label class="input-label">Nom</label>
+        </div>
+        <div class="input-box">
+            <input class="input-text" minlength="3" name="mail" onChange="this.setAttribute('value', this.value);" required type="email"
+                   value="">
+            <label class="input-label">Email</label>
+        </div>
+        <div class="input-box">
+            <input class="input-text" minlength="3" name="password" onChange="this.setAttribute('value', this.value);" required type="password"
+                   value="">
+            <label class="input-label">Mot de Passe</label>
+        </div>
+        <div class="input-box">
+            <input id="sess_perm" name="sess_perm" type="checkbox" value="sess_perm">
+            <label class="input-label" for="sess_perm">Garder ma session ouverte</label>
+        </div>
+        <div class="input-box">
+            <button class="btn btn--primary" id="valider" type="submit">Je m'inscris</button>
+        </div>
+    </form>
+
+    <img class="signup-image" src=" {{ url_for('static', filename='signup.jpg') }}">
+</div>
+{% endblock %}

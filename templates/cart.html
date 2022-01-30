@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block titre %}Votre Panier - Swarovni{% endblock %}
+
+
+{% block corps %}
+<section class="container">
+    <div class="cart">
+        <div class="cart-main">
+            <h2>Votre panier</h2>
+            {% if session['cart'] == [] %}
+            <p>{{ message }}</p>
+            {% else %}
+            <div class="items">
+                {% for product in product_in_cart %}
+                <div class="item">
+                    <a href="{{ url_for('product_page', product_id = product['id']) }}">
+                        <img class="item-image"
+                             height="300"
+                             src=" {{ url_for('static', filename=('img_product/{}'.format(product['filename1']))) }}"
+                             width="220">
+                    </a>
+                    <a class="item-name" href="{{ url_for('product_page', product_id = product['id']) }}">
+                        <h2> {{product["title"]}} </h2>
+                    </a>
+                    <p class="item-price"> {{ "{:.2f}".format(product["price"]) }} €</p>
+                    <p class="item-qty">Qté :
+                    {% for row in session['cart'] %}
+                        {% if row[0] == product['id'] %}
+                            {{row[1]}}
+                        {% endif %}
+                    {% endfor %}
+                    </p>
+                    <a class="btn btn--secondary" href="{{ url_for('product_page', product_id = product['id']) }}">
+                        Modifier la quantité</a>
+                    <form action='/del_product_cart' method="POST">
+                        <div class="item-btns btns--column">
+                            <input hidden id="product_id" name="product_id" required type="text" value='{{ product["id"] }}'>
+                            <button class="btn btn--transparent" id="valider" type="submit" title="Supprimer cet article">
+                                <img src="{{ url_for('static', filename='bin.png') }}" alt="Poubz" width="20" />
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% if not session['cart'] == [] %}
+            <div class="cart-resume-wrapper">
+                <h2>Résumé de votre panier</h2>
+                <div class="cart-resume">
+                    <div class="cart-resume-row">
+                        <span>Montant total</span>
+                        <span>
+                            {{ "{:.2f}".format(total_cart) }} €
+                        </span>
+                    </div>
+                    <div class="cart-resume-row">
+                        <span>Frais de livraison</span>
+                        <span>
+                            {% if total_cart >= 250 %}
+                                Gratuit
+                            {% else %}
+                                25 €
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="cart-resume-row">
+                        <strong>Total</strong>
+                        <span>
+                            {% if total_cart < 250 %}
+                                {{ "{:.2f}".format(total_cart + 25) }} €
+                            {% else %}
+                                {{ "{:.2f}".format(total_cart) }} €
+                            {% endif %}
+                        </span>
+                    </div>
+                    <a class="btn btn--primary" href="{{ url_for('shipping') }}">Finalisez mes achats</a>
+                    <small>Jusqu'à 14 jours pour retourner. <br> Livraison gratuite dès 250.00 €.</small>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

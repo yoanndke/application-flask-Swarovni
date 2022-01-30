@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block titre %}Paiement{% endblock %}
+
+{% block header %}
+<div class="navbar">
+    <img alt="Logo Swarovni" class="logo" src="{{ url_for('static', filename='logo.png') }}"/>
+
+    <div class="navbar-checkout">
+        <div class="navbar-checkout-step">
+            1<span>Livraison</span>
+        </div>
+        <div class="navbar-checkout-step current">
+            2<span>Paiement</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block corps %}
+<section class="container">
+    <div class="cart">
+        <div class="cart-main">
+            <div>
+                <h2>Adresse de livraison</h2>
+                <p>{{ user['firstname'] }} {{ user['name'] }}</p>
+                <p>{{ user['address'] }}</p>
+                <p>{{ user['postal_code'] }}</p>
+                <p>{{ user['town'] }}</p>
+            </div>
+            <form action="/checkout/shipping" class="form-wrapper signup-form" method="POST">
+                <h2>Informations de paiement</h2>
+                <div class="input-box">
+                    <input class="input-text" id="ccn" max="19" pattern="[0-9\s]{13,19}" type="number" onChange="this.setAttribute('value', this.value);" value="">
+                    <label class="input-label" for="ccn">Numéro de carte de crédit</label>
+                </div>
+                <div class="input-section">
+                    <div class="input-box input-box--half">
+                        <input class="input-text" minlength="3" name="name"
+                               onChange="this.setAttribute('value', this.value);" required
+                               type="month" value="" pattern="[0-9]{2}-[0-9]{2}">
+                        <label class="input-label">Date d'expiration</label>
+                    </div>
+                    <div class="input-box input-box--half">
+                        <input class="input-text" max="3" min="3" name="number"
+                               onChange="this.setAttribute('value', this.value);" required
+                               type="number" value="">
+                        <label class="input-label">Code de sécurité</label>
+                    </div>
+                </div>
+
+                <div class="input-box">
+                    <a class="btn btn--primary" href="{{ url_for('thankyou_page') }}">Valider le paiement</a>
+                </div>
+            </form>
+        </div>
+        <div class="cart-resume-wrapper">
+            <h2>Résumé de votre panier</h2>
+            <div class="cart-resume">
+                {% if session['cart'] == [] %}
+                    <p>{{ message }}</p>
+                {% else %}
+                    <div class="cart-resume-items">
+                        <h3>Vos produits</h3>
+                        {% for product in product_in_cart %}
+                        <div class="cart-resume-item cart-resume-row">
+                            <p>{{product["title"]}}
+                                (
+                                {% for row in session['cart'] %}
+                                    {% if row[0] == product['id'] %}
+                                        {{row[1]}}
+                                    {% endif %}
+                                {% endfor %}
+                                )
+                            </p>
+                            <p> {{ "{:.2f}".format(product["price"]) }} €</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="cart-resume-row">
+                        <span>Montant total</span>
+                        <span>
+                            {{ "{:.2f}".format(total_cart) }} €
+                        </span>
+                    </div>
+                    <div class="cart-resume-row">
+                        <span>Frais de livraison</span>
+                        <span>
+                            {% if total_cart >= 250 %}
+                                Gratuit
+                            {% else %}
+                                25 €
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="cart-resume-row">
+                        <strong>Total</strong>
+                        <span>
+                            {% if total_cart < 250 %}
+                                {{ "{:.2f}".format(total_cart + 25) }} €
+                            {% else %}
+                                {{ "{:.2f}".format(total_cart) }} €
+                            {% endif %}
+                        </span>
+                    </div>
+                    <small>Jusqu'à 14 jours pour retourner. <br> Livraison gratuite dès 250.00 €.</small>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block titre %}{{product["title"]}} - Swarovni{% endblock %}
+
+
+{% block corps %}
+<section class="container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="message"> {{ message }} </p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="product-wrapper">
+        <div class="product-slider">
+            {% if product['filename2'] == "" or product['filename2'] == None %}
+                <img class="product-image"
+                     src=" {{ url_for('static', filename=('img_product/{}'.format(product['filename1']))) }}">
+            {% elif product['filename3'] == "" or product['filename3'] == None %}
+                <img class="product-image"
+                     src=" {{ url_for('static', filename=('img_product/{}'.format(product['filename1']))) }}">
+                <img class="product-image"
+                     src=" {{ url_for('static', filename=('img_product/{}'.format(product['filename2']))) }}">
+            {% else %}
+                <img class="product-image"
+                     src=" {{ url_for('static', filename=('img_product/{}'.format(product['filename1']))) }}">
+                <img class="product-image"
+                     src=" {{ url_for('static', filename=('img_product/{}'.format(product['filename2']))) }}">
+                <img class="product-image"
+                     src=" {{ url_for('static', filename=('img_product/{}'.format(product['filename3']))) }}">
+            {% endif %}
+        </div>
+
+        <div class="product-infos">
+            <h2> {{product["title"]}} </h2>
+            <p class="product-tag"> {{ product["tag"] }} </p>
+            <p> {{product["desc"]}} </p>
+            <p class="item-price"> {{ "{:.2f}".format(product["price"]) }} €</p>
+            <div class="item-btns btns--column">
+                <form action='/add_cart' method="POST">
+                    <label for="size">Quantité :</label>
+                    <select id="size" name="size">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <input hidden id="product_id" name="product_id" required type="text" value='{{ product["id"] }}'>
+                    {% if session['users'] %}
+                    <button class="btn btn--primary" id="valider" type="submit">Ajouter au panier</button>
+                    {% else %}
+                    <a class="btn btn--secondary" href="{{ url_for('sign_up') }}">Ajouter au panier</a>
+                    {% endif %}
+                </form>
+                {% if session['users'] and session['users']['admin'] == 1 %}
+                <a class="btn btn--secondary" href="{{ url_for('edit_product', product_id = product['id']) }}">Modifier
+                    ce produit</a>
+                <div class="btn-delete-wrapper">
+                    <a class="btn btn--secondary btn-delete action-confirm-delete">Supprimer ce produit</a>
+                    <div class="btn-delete-confirm">
+                        <span class="btn btn--secondary action-delete-product">Oui</span>
+                        <span class="btn btn--primary action-abort-delete">Non</span>
+                    </div>
+                    <form action="/del_product" class="form-delete-product" method="POST">
+                        <input hidden id="title" name="title" required type="text" value='{{ product["title"] }}'>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

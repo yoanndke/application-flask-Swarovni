@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block titre %}Mon adresse de livraison{% endblock %}
+
+{% block header %}
+<div class="navbar">
+    <img alt="Logo Swarovni" class="logo" src="{{ url_for('static', filename='logo.png') }}"/>
+
+    <div class="navbar-checkout">
+        <div class="navbar-checkout-step current">
+            1<span>Livraison</span>
+        </div>
+        <div class="navbar-checkout-step">
+            2<span>Paiement</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block corps %}
+<section class="container">
+    <div class="cart">
+        <div class="cart-main">
+            <form action="/checkout/shipping" class="form-wrapper signup-form" method="POST">
+                    <h1 class="signup-title">Adresse de livraison</h1>
+                    <div class="input-box">
+                        <input id="sexChoice1" name="sex" type="radio" required value="Homme">
+                        <label for="sexChoice1">M.</label>
+                        <input id="sexChoice2" name="sex" type="radio" required value="Femme">
+                        <label for="sexChoice2">Mme</label>
+                        <input id="sexChoice3" name="sex" type="radio" required value="Indéterminé">
+                        <label for="sexChoice3">Indéterminé</label>
+                    </div>
+                    <div class="input-box">
+                        <input class="input-text" disabled="disabled" minlength="3" name="firstname"
+                               onChange="this.setAttribute('value', this.value);" required
+                               type="text" value="{{ user['firstname'] }}">
+                        <label class="input-label">Prénom</label>
+                    </div>
+                    <div class="input-box">
+                        <input class="input-text" disabled="disabled" minlength="3" name="name"
+                               onChange="this.setAttribute('value', this.value);" required
+                               type="text" value="{{ user['name'] }}">
+                        <label class="input-label">Nom</label>
+                    </div>
+                    <div class="input-box">
+                        <input class="input-text" disabled="disabled" minlength="3" name="mail"
+                               onChange="this.setAttribute('value', this.value);" required
+                               type="email" value="{{ user['mail'] }}">
+                        <label class="input-label">Email</label>
+                    </div>
+                    <div class="input-box">
+                        <input class="input-text" name="phone" onChange="this.setAttribute('value', this.value);" required
+                               type="tel"
+                               value='{% if user["phone_number"] != None %}{{ user["phone_number"] }}{% endif %}'>
+                        <label class="input-label">Téléphone</label>
+                    </div>
+                    <div class="input-box">
+                        <input class="input-text" minlength="3" name="address"
+                               onChange="this.setAttribute('value', this.value);"
+                               required type="text"
+                               value='{% if user["address"] != None %}{{ user["address"] }}{% endif %}'>
+                        <label class="input-label">Adresse de livraison</label>
+                    </div>
+                    <div class="input-box">
+                        <input class="input-text" name="postal_code" onChange="this.setAttribute('value', this.value);"
+                               pattern="[0-9]{5}" required
+                               type="text" value='{% if user["postal_code"] != None %}{{ user["postal_code"] }}{% endif %}'>
+                        <label class="input-label">Code Postal</label>
+                    </div>
+                    <div class="input-box">
+                        <input class="input-text" name="town" onChange="this.setAttribute('value', this.value);"
+                               required type="text"
+                               value='{% if user["town"] != None %}{{ user["town"] }}{% endif %}'>
+                        <label class="input-label">Ville</label>
+                    </div>
+                    <div class="input-box">
+                        <input id="add_fact" name="add_fact" type="checkbox" required checked value="add_fact">
+                        <label for="add_fact">Cette adresse est mon adresse de facturation</label>
+                    </div>
+
+                    <div class="input-box">
+                        <button class="btn btn--primary" id="valider" type="submit">Procéder au paiement</button>
+                    </div>
+            </form>
+        </div>
+        <div class="cart-resume-wrapper">
+            <h2>Résumé de votre panier</h2>
+            <div class="cart-resume">
+                {% if session['cart'] == [] %}
+                    <p>{{ message }}</p>
+                {% else %}
+                    <div class="cart-resume-items">
+                        <h3>Vos produits</h3>
+                        {% for product in product_in_cart %}
+                        <div class="cart-resume-item cart-resume-row">
+                            <p>{{product["title"]}}
+                                (
+                                {% for row in session['cart'] %}
+                                    {% if row[0] == product['id'] %}
+                                        {{row[1]}}
+                                    {% endif %}
+                                {% endfor %}
+                                )
+                            </p>
+                            <p> {{ "{:.2f}".format(product["price"]) }} €</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="cart-resume-row">
+                        <span>Montant total</span>
+                        <span>
+                            {{ "{:.2f}".format(total_cart) }} €
+                        </span>
+                    </div>
+                    <div class="cart-resume-row">
+                        <span>Frais de livraison</span>
+                        <span>
+                            {% if total_cart >= 250 %}
+                                Gratuit
+                            {% else %}
+                                25 €
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="cart-resume-row">
+                        <strong>Total</strong>
+                        <span>
+                            {% if total_cart < 250 %}
+                                {{ "{:.2f}".format(total_cart + 25) }} €
+                            {% else %}
+                                {{ "{:.2f}".format(total_cart) }} €
+                            {% endif %}
+                        </span>
+                    </div>
+                    <small>Jusqu'à 14 jours pour retourner. <br> Livraison gratuite dès 250.00 €.</small>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

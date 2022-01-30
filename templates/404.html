@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block titre %}Swarovni{% endblock %}
+
+
+{% block corps %}
+<div style="width: 100%; text-align: center; margin-top: 50px;">
+    <h1>Page Non Trouvée</h1>
+    <p>Ce que vous cherchez ne semble plus être ici.</p>
+    <a class="btn btn--secondary" href="{{ url_for('index') }}" style="margin-top: 20px;">Retour à l'accueil</a>
+</div>
+{% endblock %}

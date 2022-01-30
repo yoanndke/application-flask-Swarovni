@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block titre %}Ajout d'un produit{% endblock %}
+
+{% block corps %}
+<div class="signup">
+    <form action="/add_product" class="form-wrapper signup-form" enctype="multipart/form-data" method="POST">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <p class="message">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <h1 class="signup-title">Ajouter un produit</h1>
+        <div class="input-box">
+            <input class="input-text" minlength="3" name="title" onChange="this.setAttribute('value', this.value);" required type="text"
+                   value="Essai">
+            <label class="input-label">Titre</label>
+        </div>
+        <div class="input-box">
+            <textarea class="input-text input-textarea" cols="50" minlength="120" name="desc" onChange="this.setAttribute('value', this.value);" required
+                      rows="15" wrap='hard'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</textarea>
+            <label class="input-label">Description</label>
+        </div>
+        <div class="input-box">
+            <input class="input-text" min="0" name="price" onChange="this.setAttribute('value', this.value);" required step=".01" type="number"
+                   value="5">
+            <label class="input-label">Prix</label>
+        </div>
+        <div class="input-box">
+            <input class="input-text" minlength="3" name="tag" onChange="this.setAttribute('value', this.value);" required type="text"
+                   value="produit">
+            <label class="input-label">Tag</label>
+        </div>
+        <div class="input-box">
+            <label>Choisis l'image de ton produit</label>
+            <input accept="image/png, image/jpeg" id="file" multiple name="file" type="file">
+        </div>
+
+        <div class="input-box">
+            <button class="btn btn--primary" id="valider" type="submit">J'ajoute ce produit</button>
+        </div>
+    </form>
+
+    <img class="signup-image" src=" {{ url_for('static', filename='signup.jpg') }}">
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block titre %}Swarovni{% endblock %}
+
+
+{% block corps %}
+<div style="width: 100%; text-align: center">
+    <h1>Merci de votre achat</h1>
+    <p>Nous allons vous préparer vos articles avec le plus grand soin</p>
+    <a class="btn btn--secondary" href="{{ url_for('index') }}" style="margin-top: 20px;">Retour à l'accueil</a>
+</div>
+{% endblock %}

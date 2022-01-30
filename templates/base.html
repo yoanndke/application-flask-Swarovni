@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+<head> {% block head %}
+    <meta charset="utf-8"/>
+    <title>{% block titre %}Header par défaut{% endblock %}</title>
+    <link href="{{ url_for('static', filename='favicon.ico') }}" rel="icon" type="image/x-icon">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cardo:ital@0;1&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" rel="stylesheet" type="text/css"/>
+    <link href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" rel="stylesheet" type="text/css"/>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+    {% endblock %}
+</head>
+
+<body>
+{% block header %}
+<nav class="navbar">
+    <a href=" {{ url_for('index') }} ">
+        <img class="logo" alt="Logo Swarovni" src="{{ url_for('static', filename='logo.png') }}"/>
+    </a>
+    <div class="navbar-links">
+        <a href="{{ url_for('rings') }}">Bagues</a>
+        <a href="{{ url_for('comingSoon') }}">Colliers</a>
+        <a href="{{ url_for('comingSoon') }}">Montres</a>
+        {% if session['users'] and session['users']['admin'] == 1 %}
+        <a href="{{ url_for('panel_admin') }} ">Panel Admin</a>
+        {% endif %}
+        {% if session['users'] %}
+        <a href="{{ url_for('logout') }} ">Déconnexion</a>
+        {% else %}
+        <a href="{{ url_for('sign_up') }} ">S'inscrire</a>
+        <a href="{{ url_for('login') }} ">Se connecter</a>
+        {% endif %}
+        <a href=" {{ url_for('cart') }} " class="minicart">
+            <img alt="Panier" height="25" src="{{ url_for('static', filename='panier.png') }}" width="25"/>
+            {{ session["cart"]|length }}
+        </a>
+    </div>
+</nav>
+{% endblock %}
+
+{% block corps %}
+<div>
+    <p>Corps par défaut</p>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="footer">
+    <div class="text-center">
+        <a href=" {{ url_for('index') }} ">
+            <img class="logo" alt="Logo Swarovni" src="{{ url_for('static', filename='logo.png') }}"/>
+        </a>
+    </div>
+    <div class="footer-cols">
+        <div class="footer-col">
+            <h4>Service Clientèle</h4>
+            <ul>
+                <li><a href="404.html">Entretien & Réparations</a></li>
+                <li><a href="404.html">FAQ</a></li>
+                <li><a href="404.html">Livraisons & Retours</a></li>
+                <li><a href="404.html">Contactez-Nous</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>A propos</h4>
+            <ul>
+                <li><a href="404.html">A propos</a></li>
+                <li><a href="404.html">Durabilité</a></li>
+                <li><a href="404.html">Emplois et Carrières</a></li>
+                <li><a href="404.html">Cadeaux d'Entrepris</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Mentions Légales</h4>
+            <ul>
+                <li><a href="404.html">Conditions d'Utilisation</a></li>
+                <li><a href="404.html">Conditions Générales</a></li>
+                <li><a href="404.html">Politique de Confidentialité</a></li>
+                <li><a href="404.html">Mention Légale</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-legals">
+        <p>Copyright © 2022 Swarovni. Tous droits réservés.</p>
+        <p>Site web contrefait comportant des produits Swarovski pour un unique usage scolaire.</p>
+    </div>
+</footer>
+{% endblock %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

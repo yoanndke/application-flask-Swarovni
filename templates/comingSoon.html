@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block titre %}Swarovni{% endblock %}
+
+
+{% block corps %}
+<div class="signup">
+    <div class="form-wrapper signup-form">
+        <h1 class="signup-title">Coming Soon ...</h1>
+        <p>Ces produits ne devraient plus mettre beaucoup de temps à arriver...</p>
+        <p>Soyez le premier à être prévenu de leur arrivée :</p>
+        <div class="input-section">
+            <div class="input-box input-box--half">
+                <input class="input-text" minlength="3" name="mail" onChange="this.setAttribute('value', this.value);"
+                       required
+                       type="email"
+                       value="">
+                <label class="input-label">Email</label>
+            </div>
+            <button class="btn btn--primary" id="valider" type="submit">Je m'inscris</button>
+        </div>
+        <div class="input-box">
+            <a class="btn btn--secondary" href="{{ url_for('index') }}" style="margin-top: 20px;">Retour à l'accueil</a>
+        </div>
+    </div>
+
+
+    <img class="signup-image" src=" {{ url_for('static', filename='signup.jpg') }}">
+</div>
+{% endblock %}
